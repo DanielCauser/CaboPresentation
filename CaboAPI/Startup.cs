@@ -35,6 +35,8 @@ namespace CaboAPI
             
             services.Configure<CaboApiConfiguration>(Configuration);
             services.Configure<ExternalServiceConfiguration>(Configuration.GetSection("ExternalServiceConfiguration"));
+
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

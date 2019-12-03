@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 namespace CaboAPI
 {
@@ -21,7 +22,12 @@ namespace CaboAPI
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
+                    logging.AddApplicationInsights("ikey");
+                    // Adds the filter for Information
+                    // By default App insights only picks up 
+                    // Warning and higher.
+                    logging.AddFilter<ApplicationInsightsLoggerProvider>
+                        ("", LogLevel.Information);
                 })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

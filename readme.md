@@ -8,40 +8,44 @@
     - Different IOptions
     - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-3.0
 
-2. Different environments
+1. Different environments
     - Set configuration based on the Environment
     - Setting appsenting files sets the config automaticaly
     - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-3.0
 
-3. Logging | Monitoring
-    - Default Framework Logger
-    - App Insights
+1. Logging | Monitoring
+    - Default Framework Logger:
+        - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.0
+    - App Insights:
+        - https://docs.microsoft.com/en-us/azure/azure-monitor/app/ilogger
+        - Microsoft.ApplicationInsights.AspNet SDK
 
-4. Validation
-    - Default AspNet.Core
-    - Fluent Validator
-
-5. Paging Sorting Filtering
-    - Old way
-    - GraphQL
-
-6. Versioning
+1. Versioning
     - Route
     - Header
     - QueryString
 
-7. Authentication
-
-8. Rest Config
+1. Rest Config
     - Different Verbs
     - Http Codes
     - Explanatory API URL endpoints
     - Data Transfer Objects
 
-9. Actions
+1. Validation
+    - Default AspNet.Core
+    - Fluent Validator
+
+1. Paging Sorting Filtering
+    - Restful
+    - oData
+    - GraphQL
+
+1. Actions
     - https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.0
 
-10. Cache
+1. Cache
     - Response Cache
     - Memory Cache
+
+1. Authentication
 
