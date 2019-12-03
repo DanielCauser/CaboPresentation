@@ -10,7 +10,9 @@ using Microsoft.Extensions.Options;
 namespace CaboAPI.Controllers
 {
     [ApiController]
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class CaboController : ControllerBase
     {
         private readonly ILogger<CaboController> _logger;
@@ -32,16 +34,31 @@ namespace CaboAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CaboDto> Get()
+        [ApiVersion("2.0")]
+        public IEnumerable<TodoCabo2Dto> Get2()
         {
-            _logger.LogInformation("Get Cabo Was called");
+            _logger.LogInformation("Get Cabo V2 Was called");
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new CaboDto
+            return Enumerable.Range(1, 5).Select(index => new TodoCabo2Dto
             {
-                Date = DateTime.Now.AddDays(index),
+                DateStarted = DateTime.Now.AddDays(index),
+                DateEnded = DateTime.Now.AddDays(index + 5),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+        
+        [HttpGet]
+        public IEnumerable<TodoCaboDto> Get()
+        {
+            _logger.LogInformation("Get Cabo V1 Was called");
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new TodoCaboDto
+                {
+                    Date = DateTime.Now.AddDays(index),
+                    Summary = Summaries[rng.Next(Summaries.Length)]
+                })
+                .ToArray();
         }
     }
 }

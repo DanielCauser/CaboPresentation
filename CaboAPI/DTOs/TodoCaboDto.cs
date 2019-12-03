@@ -2,7 +2,7 @@ using System;
 
 namespace CaboAPI.DTOs
 {
-    public class CaboDto
+    public class TodoCaboDto
     {
         public DateTime Date { get; set; }
         public string Name { get; set; }

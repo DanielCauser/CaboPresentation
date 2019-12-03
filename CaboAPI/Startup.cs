@@ -37,6 +37,13 @@ namespace CaboAPI
             services.Configure<ExternalServiceConfiguration>(Configuration.GetSection("ExternalServiceConfiguration"));
 
             services.AddApplicationInsightsTelemetry();
+
+            services.AddApiVersioning(config =>
+            {
+                config.ReportApiVersions = true;
+                config.AssumeDefaultVersionWhenUnspecified = true;
+                config.DefaultApiVersion = new ApiVersion(1,0);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +53,8 @@ namespace CaboAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseApiVersioning();
 
             app.UseHttpsRedirection();
 

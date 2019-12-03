@@ -24,6 +24,7 @@
     - Route
     - Header
     - QueryString
+    - https://github.com/microsoft/aspnet-api-versioning/wiki/New-Services-Quick-Start#aspnet-core
 
 1. Rest Config
     - Different Verbs
@@ -48,4 +49,9 @@
     - Memory Cache
 
 1. Authentication
+
+
+
+## Usefull links
+- https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1
 
