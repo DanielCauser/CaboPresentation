@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using AutoMapper;
 using CaboAPI.DTOs;
 using CaboAPI.Options;
+using CaboAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,58 +13,55 @@ using Microsoft.Extensions.Options;
 namespace CaboAPI.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/[controller]")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class CaboController : ControllerBase
     {
         private readonly ILogger<CaboController> _logger;
-        private readonly ExternalServiceConfiguration _serviceConfig;
-        private readonly CaboApiConfiguration _caboConfig;
+        private readonly IMapper _mapper;
+        private readonly ITodoCaboService _caboService;
 
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        public CaboController(IOptions<ExternalServiceConfiguration> serviceConfig,
-            IOptions<CaboApiConfiguration> caboConfig,
-            ILogger<CaboController> logger)
+        public CaboController(ILogger<CaboController> logger,
+            IMapper mapper,
+            ITodoCaboService caboService)
         {
             _logger = logger;
-            _serviceConfig = serviceConfig.Value;
-            _caboConfig = caboConfig.Value;
+            _mapper = mapper;
+            _caboService = caboService;
         }
 
         [HttpGet]
-        [ApiVersion("2.0")]
         [ProducesResponseType(typeof(IEnumerable<TodoCabo2Dto>), 200)]
-        public IEnumerable<TodoCabo2Dto> Get2()
+        public IActionResult Get2()
         {
             _logger.LogInformation("Get Cabo V2 Was called");
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new TodoCabo2Dto
-                {
-                    DateStarted = DateTime.Now.AddDays(index),
-                    DateEnded = DateTime.Now.AddDays(index + 5),
-                    Summary = Summaries[rng.Next(Summaries.Length)]
-                })
-                .ToArray();
+            return Ok(_mapper.Map<IEnumerable<TodoCabo2Dto>>(_caboService.GetList()));
         }
 
         [HttpGet]
+        [ApiVersion("1.0", Deprecated = true)]
         [ProducesResponseType(typeof(IEnumerable<TodoCaboDto>), 200)]
-
-    public IEnumerable<TodoCaboDto> Get()
+        public IActionResult Get()
         {
             _logger.LogInformation("Get Cabo V1 Was called");
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new TodoCaboDto
-                {
-                    Date = DateTime.Now.AddDays(index),
-                    Summary = Summaries[rng.Next(Summaries.Length)]
-                })
-                .ToArray();
+            return Ok(_mapper.Map<IEnumerable<TodoCaboDto>>(_caboService.GetList()));
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(TodoCabo2Dto), 200)]
+        [Route("{id}")]
+        public IActionResult Get([FromRoute] Guid id)
+        {
+            if (Guid.Empty == id)
+                return BadRequest();
+            
+            var result = _caboService.GetSingle(id);
+
+            if (result is null)
+                return NotFound();
+            
+            return Ok(_mapper.Map<TodoCabo2Dto>(result));
         }
     }
 }

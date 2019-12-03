@@ -1,6 +1,6 @@
 namespace CaboAPI.Services
 {
-    public interface ITodoService
+    public interface ITodoItemService
     {
         
     }

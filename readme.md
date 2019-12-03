@@ -29,28 +29,26 @@
 1. Rest Config
     - Different Verbs
     - Http Codes
-    - Explanatory API URL endpoints
-    - Data Transfer Objects
+    - Proper Routing (Explanatory API URL endpoints)
+    - Data Transfer Objects (AutoMapper)
 
 1. Validation
     - Default AspNet.Core
     - Fluent Validator
 
-1. Paging Sorting Filtering
-    - Restful
-    - oData
-    - GraphQL
-
-1. Actions
-    - https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.0
-
 1. Cache
     - Response Cache
     - Memory Cache
 
-1. Authentication
+1. Actions
+    - https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.0
 
+1. ~~Paging Sorting Filtering~~
+    - ~~Restful~~
+    - ~~oData~~
+    - ~~GraphQL~~
 
+1. ~~Authentication~~
 
 ## Usefull links
 - https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1
