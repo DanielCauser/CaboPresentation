@@ -10,9 +10,11 @@
 
 2. Different environments
     - Set configuration based on the Environment
+    - Setting appsenting files sets the config automaticaly
     - https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-3.0
 
 3. Logging | Monitoring
+    - Default Framework Logger
     - App Insights
 
 4. Validation

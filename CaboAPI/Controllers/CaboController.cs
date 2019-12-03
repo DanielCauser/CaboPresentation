@@ -13,6 +13,7 @@ namespace CaboAPI.Controllers
     [Route("api/[controller]")]
     public class CaboController : ControllerBase
     {
+        private readonly ILogger<CaboController> _logger;
         private readonly ExternalServiceConfiguration _serviceConfig;
         private readonly CaboApiConfiguration _caboConfig;
 
@@ -21,8 +22,11 @@ namespace CaboAPI.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public CaboController(IOptions<ExternalServiceConfiguration> serviceConfig, IOptions<CaboApiConfiguration> caboConfig)
+        public CaboController(IOptions<ExternalServiceConfiguration> serviceConfig,
+            IOptions<CaboApiConfiguration> caboConfig,
+            ILogger<CaboController> logger)
         {
+            _logger = logger;
             _serviceConfig = serviceConfig.Value;
             _caboConfig = caboConfig.Value;
         }
@@ -30,6 +34,7 @@ namespace CaboAPI.Controllers
         [HttpGet]
         public IEnumerable<CaboDto> Get()
         {
+            _logger.LogInformation("Get Cabo Was called");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new CaboDto
             {
