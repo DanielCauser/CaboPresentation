@@ -3,6 +3,8 @@
 
 
 - Configuration
+    - IOption Pattern
+    - Setting it up
 
 - Different environments
 
