@@ -16,8 +16,11 @@ namespace CaboAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            _env = env;
             Configuration = configuration;
         }
 
@@ -29,6 +32,7 @@ namespace CaboAPI
             services.AddControllers();
             
             services.AddOptions();
+            
             services.Configure<CaboApiConfiguration>(Configuration);
             services.Configure<ExternalServiceConfiguration>(Configuration.GetSection("ExternalServiceConfiguration"));
         }
