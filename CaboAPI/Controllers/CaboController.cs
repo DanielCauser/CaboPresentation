@@ -35,21 +35,24 @@ namespace CaboAPI.Controllers
 
         [HttpGet]
         [ApiVersion("2.0")]
+        [ProducesResponseType(typeof(IEnumerable<TodoCabo2Dto>), 200)]
         public IEnumerable<TodoCabo2Dto> Get2()
         {
             _logger.LogInformation("Get Cabo V2 Was called");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new TodoCabo2Dto
-            {
-                DateStarted = DateTime.Now.AddDays(index),
-                DateEnded = DateTime.Now.AddDays(index + 5),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+                {
+                    DateStarted = DateTime.Now.AddDays(index),
+                    DateEnded = DateTime.Now.AddDays(index + 5),
+                    Summary = Summaries[rng.Next(Summaries.Length)]
+                })
+                .ToArray();
         }
-        
+
         [HttpGet]
-        public IEnumerable<TodoCaboDto> Get()
+        [ProducesResponseType(typeof(IEnumerable<TodoCaboDto>), 200)]
+
+    public IEnumerable<TodoCaboDto> Get()
         {
             _logger.LogInformation("Get Cabo V1 Was called");
             var rng = new Random();
