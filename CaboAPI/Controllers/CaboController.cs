@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.JsonPatch;
+
 
 namespace CaboAPI.Controllers
 {
@@ -32,7 +34,7 @@ namespace CaboAPI.Controllers
             _mapper = mapper;
             _caboService = caboService;
         }
-        
+
         [HttpGet]
         [ApiVersion("1.0", Deprecated = true)]
         [ProducesResponseType(typeof(IEnumerable<TodoCaboDto>), StatusCodes.Status200OK)]
@@ -58,13 +60,13 @@ namespace CaboAPI.Controllers
         public IActionResult GetSingleTodoCabo([FromRoute] Guid id, ApiVersion apiVersion)
         {
             if (Guid.Empty == id)
-                return BadRequest();
-            
+                return BadRequest(ModelState);
+
             var result = _caboService.GetSingle(id);
 
             if (result is null)
                 return NotFound();
-            
+
             return Ok(_mapper.Map<TodoCabo2Dto>(result));
         }
 
@@ -75,6 +77,10 @@ namespace CaboAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult AddCabo([FromBody] TodoCaboCreateDto todoCaboCreateDto, ApiVersion apiVersion)
         {
+
+            if (todoCaboCreateDto is null)
+                return BadRequest(ModelState);
+
             var toAdd = _mapper.Map<TodoCabo>(todoCaboCreateDto);
 
             var result = _caboService.Save(toAdd);
@@ -96,18 +102,18 @@ namespace CaboAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{id}")]
-        public IActionResult UpdateCabo([FromRoute] Guid id, [FromBody] TodoCaboUpdateDto todoCaboCreateDto,
+        public IActionResult UpdateCabo([FromRoute] Guid id, [FromBody] TodoCaboUpdateDto todoCaboUpdateDto,
             ApiVersion apiVersion)
         {
-            if (Guid.Empty == id)
-                return BadRequest();
+            if (Guid.Empty == id || todoCaboUpdateDto is null)
+                return BadRequest(ModelState);
 
             var existing = _caboService.GetSingle(id);
 
             if (existing is null)
                 return NotFound();
 
-            var toUpdate = _mapper.Map<TodoCabo>(todoCaboCreateDto);
+            var toUpdate = _mapper.Map<TodoCabo>(todoCaboUpdateDto);
 
             var result = _caboService.Save(toUpdate);
 
@@ -115,6 +121,37 @@ namespace CaboAPI.Controllers
                 return StatusCode(500);
 
             return Ok(_mapper.Map<TodoCabo2Dto>(toUpdate));
+        }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(TodoCabo2Dto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("{id}")]
+        public IActionResult PartiallyUpdate([FromRoute] Guid id,
+            [FromBody] JsonPatchDocument<TodoCaboUpdateDto> todoCaboUpdateDto,
+            ApiVersion apiVersion)
+        {
+            if (todoCaboUpdateDto is null)
+                return BadRequest(ModelState);
+
+            var existing = _caboService.GetSingle(id);
+
+            if (existing is null)
+                return NotFound();
+
+            var toPatch = _mapper.Map<TodoCaboUpdateDto>(existing);
+            todoCaboUpdateDto.ApplyTo(toPatch);
+
+            _mapper.Map(toPatch, existing);
+
+            var result = _caboService.Save(existing);
+
+            if (!result)
+                return StatusCode(500);
+
+            return Ok(_mapper.Map<TodoCabo2Dto>(existing));
         }
     }
 }

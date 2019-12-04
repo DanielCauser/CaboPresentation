@@ -49,7 +49,7 @@ namespace CaboAPI.Services
         {
             new TodoCabo
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("9cb602e9-215c-444d-bffa-d818ab6d6222"),
                 NameActivity = "Name1",
                 DateStarted = DateTime.Now,
                 DateEnded = DateTime.Now.AddDays(2),
@@ -57,16 +57,15 @@ namespace CaboAPI.Services
             },
             new TodoCabo
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("ded8f27d-e58b-4e27-8012-8409f38c177b"),
                 NameActivity = "Name2",
                 DateStarted = DateTime.Now,
                 DateEnded = DateTime.Now.AddDays(6),
                 Summary = "Summary2"
-            }
-            ,
+            },
             new TodoCabo
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("a581cf2e-daac-47ee-ad77-30b10653db73"),
                 NameActivity = "Name3",
                 DateStarted = DateTime.Now,
                 DateEnded = DateTime.Now.AddDays(1),

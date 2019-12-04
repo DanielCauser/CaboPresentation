@@ -1,0 +1,46 @@
+get https://localhost:5001/api/v2/Cabo
+
+###
+
+get https://localhost:5001/api/v1/Cabo
+
+###
+
+get https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222
+
+### 
+POST https://localhost:5001/api/Cabo
+Content-Type: application/json
+
+{ 
+    "DateStarted": "2019-12-03T18:40:41.486199-05:00",
+    "DateEnded": "2019-12-05T18:40:41.486287-05:00",
+    "NameActivity": "Name4",
+    "Summary": "Summary4"
+}
+
+###
+
+PUT https://localhost:5001/api/Cabo/ad13f309-3d6c-477b-bd18-efbf911304ab
+Content-Type: application/json
+
+{ 
+    "DateStarted": "2019-12-03T18:40:41.486199-05:00",
+    "DateEnded": "2019-12-05T18:40:41.486287-05:00",
+    "NameActivity": "Dead",
+    "Summary": "Dead"
+}
+
+###
+
+PATCH  https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222
+Content-Type: application/json
+
+[
+  {
+    "op": "replace",
+    "path": "/NameActivity",
+    "value": "Barry"
+  }
+]
+

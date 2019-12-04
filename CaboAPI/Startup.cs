@@ -57,6 +57,9 @@ namespace CaboAPI
                     
                 })
                 .CreateMapper());
+            
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson();
 
             services.AddSingleton<ITodoCaboService, TodoCaboService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
