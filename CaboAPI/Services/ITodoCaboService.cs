@@ -10,5 +10,6 @@ namespace CaboAPI.Services
         IEnumerable<TodoCabo> GetList();
         TodoCabo GetSingle(Guid id);
         bool Save(TodoCabo model);
+        void Delete(TodoCabo existing);
     }
 }

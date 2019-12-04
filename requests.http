@@ -44,3 +44,8 @@ Content-Type: application/json
   }
 ]
 
+###
+
+DELETE  https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222
+
+

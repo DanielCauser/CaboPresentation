@@ -153,5 +153,26 @@ namespace CaboAPI.Controllers
 
             return Ok(_mapper.Map<TodoCabo2Dto>(existing));
         }
+        
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("{id}")]
+        public IActionResult Remove([FromRoute] Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest(ModelState);
+
+            var existing = _caboService.GetSingle(id);
+
+            if (existing is null)
+                return NotFound();
+
+            _caboService.Delete(existing);
+
+            return NoContent();
+        }
     }
 }

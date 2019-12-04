@@ -45,6 +45,11 @@ namespace CaboAPI.Services
             return false;
         }
 
+        public void Delete(TodoCabo existing)
+        {
+            TheList.Remove(existing);
+        }
+
         private readonly IList<TodoCabo> TheList = new List<TodoCabo>
         {
             new TodoCabo
