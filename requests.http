@@ -1,12 +1,12 @@
-get https://localhost:5001/api/v2/Cabo
+GET https://localhost:5001/api/v2/Cabo
 
 ###
 
-get https://localhost:5001/api/v1/Cabo
+GET https://localhost:5001/api/v1/Cabo
 
 ###
 
-get https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222
+GET https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222
 
 ### 
 POST https://localhost:5001/api/Cabo
@@ -47,5 +47,9 @@ Content-Type: application/json
 ###
 
 DELETE  https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222
+
+###
+
+GET  https://localhost:5001/api/Cabo/9cb602e9-215c-444d-bffa-d818ab6d6222/items
 
 
