@@ -52,4 +52,6 @@
 
 ## Usefull links
 - https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1
+- https://docs.microsoft.com/en-us/aspnet/core/web-api/jsonpatch?view=aspnetcore-3.1
+- https://exceptionnotfound.net/asp-net-core-demystified-action-results/
 
