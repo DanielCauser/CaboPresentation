@@ -26,8 +26,26 @@ namespace CaboAPI.Services
         {
             return TheList.SingleOrDefault(x => x.Id == id);
         }
-        
-        private readonly IEnumerable<TodoCabo> TheList = new List<TodoCabo>
+
+        public bool Save(TodoCabo model)
+        {
+            if (model.Id == Guid.Empty)
+            {
+                model.Id = Guid.NewGuid();
+                TheList.Add(model);
+                return true;
+            }
+            else
+            {
+                var substitute = TheList.FirstOrDefault(x => x.Id == model.Id);
+                substitute = model;
+                return true;
+            }
+
+            return false;
+        }
+
+        private readonly IList<TodoCabo> TheList = new List<TodoCabo>
         {
             new TodoCabo
             {
@@ -42,7 +60,7 @@ namespace CaboAPI.Services
                 Id = Guid.NewGuid(),
                 NameActivity = "Name2",
                 DateStarted = DateTime.Now,
-                DateEnded = DateTime.Now.AddDays(2),
+                DateEnded = DateTime.Now.AddDays(6),
                 Summary = "Summary2"
             }
             ,
@@ -51,7 +69,7 @@ namespace CaboAPI.Services
                 Id = Guid.NewGuid(),
                 NameActivity = "Name3",
                 DateStarted = DateTime.Now,
-                DateEnded = DateTime.Now.AddDays(2),
+                DateEnded = DateTime.Now.AddDays(1),
                 Summary = "Summary3"
             }
         };
