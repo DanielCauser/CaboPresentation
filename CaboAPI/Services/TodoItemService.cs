@@ -21,12 +21,12 @@ namespace CaboAPI.Services
             },
             new TodoItemDto
             {
-                Name = "Have Fun",
+                Name = "Drink beer",
                 TodoCaboId = Guid.Parse("9cb602e9-215c-444d-bffa-d818ab6d6222"),
             },
             new TodoItemDto
             {
-                Name = "Drink beer",
+                Name = "Have Fun",
                 TodoCaboId = Guid.Parse("ded8f27d-e58b-4e27-8012-8409f38c177b"),
             },
             new TodoItemDto

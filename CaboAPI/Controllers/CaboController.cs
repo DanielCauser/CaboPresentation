@@ -4,6 +4,9 @@ using AutoMapper;
 using CaboAPI.DTOs;
 using CaboAPI.Entities;
 using CaboAPI.Services;
+using CaboAPI.Validations;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,6 +19,9 @@ namespace CaboAPI.Controllers
     [ApiVersion("2.0")]
     [Route("api/[controller]")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class CaboController : ControllerBase
     {
         private readonly ILogger<CaboController> _logger;
@@ -53,8 +59,6 @@ namespace CaboAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(TodoCabo2Dto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Route("{id}")]
         public IActionResult GetSingleTodoCabo([FromRoute] Guid id, ApiVersion apiVersion)
         {
@@ -71,14 +75,10 @@ namespace CaboAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(TodoCabo2Dto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult AddCabo([FromBody] TodoCaboCreateDto todoCaboCreateDto, ApiVersion apiVersion)
-        {
-
-            if (todoCaboCreateDto is null)
-                return BadRequest(ModelState);
+        {   
+            if (!ModelState.IsValid)
+                BadRequest(ModelState);
 
             var toAdd = _mapper.Map<TodoCabo>(todoCaboCreateDto);
 
@@ -97,15 +97,15 @@ namespace CaboAPI.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(TodoCabo2Dto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{id}")]
         public IActionResult UpdateCabo([FromRoute] Guid id, [FromBody] TodoCaboUpdateDto todoCaboUpdateDto,
             ApiVersion apiVersion)
         {
-            if (Guid.Empty == id || todoCaboUpdateDto is null)
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                BadRequest(ModelState);
+            
+            if (Guid.Empty == id)
+                return BadRequest();
 
             var existing = _caboService.GetSingle(id);
 
@@ -124,17 +124,11 @@ namespace CaboAPI.Controllers
 
         [HttpPatch]
         [ProducesResponseType(typeof(TodoCabo2Dto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{id}")]
         public IActionResult PartiallyUpdate([FromRoute] Guid id,
             [FromBody] JsonPatchDocument<TodoCaboUpdateDto> todoCaboUpdateDto,
             ApiVersion apiVersion)
         {
-            if (todoCaboUpdateDto is null)
-                return BadRequest(ModelState);
-
             var existing = _caboService.GetSingle(id);
 
             if (existing is null)
@@ -142,6 +136,14 @@ namespace CaboAPI.Controllers
 
             var toPatch = _mapper.Map<TodoCaboUpdateDto>(existing);
             todoCaboUpdateDto.ApplyTo(toPatch);
+            
+            var validator = new TodoCaboUpdateDtoValidator();
+            var results = validator.Validate(toPatch);
+
+            results.AddToModelState(ModelState, null);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             _mapper.Map(toPatch, existing);
 
@@ -155,9 +157,6 @@ namespace CaboAPI.Controllers
         
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{id}")]
         public IActionResult Remove([FromRoute] Guid id)
         {
@@ -176,9 +175,6 @@ namespace CaboAPI.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<TodoItemDto>),StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{id}/items")]
         public IActionResult GetItems([FromRoute] Guid id)
         {

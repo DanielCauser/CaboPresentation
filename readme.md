@@ -35,6 +35,7 @@
 1. Validation
     - Default AspNet.Core
     - Fluent Validator
+        - https://fluentvalidation.net/aspnet
 
 1. Cache
     - Response Cache

@@ -1,20 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
+using CaboAPI.DTOs;
 using CaboAPI.MapperConfig;
 using CaboAPI.Options;
 using CaboAPI.Services;
+using CaboAPI.Validations;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using FluentValidation.AspNetCore;
 
 namespace CaboAPI
 {
@@ -51,15 +48,16 @@ namespace CaboAPI
 //                config.ApiVersionReader = new HeaderApiVersionReader("api-version");
             });
 
-            services.AddSingleton(new MapperConfiguration(mc =>
-                {
-                    mc.AddProfile(new DtoMappingProfile()); 
-                    
-                })
-                .CreateMapper());
-            
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();
+
+            services.AddMvc()
+                .AddFluentValidation();
+
+            services.AddSingleton(new MapperConfiguration(mc => { mc.AddProfile(new DtoMappingProfile()); })
+                .CreateMapper());
+
+            services.AddTransient<IValidator<TodoCaboCreateDto>, TodoCaboCreateDtoValidator>();
 
             services.AddSingleton<ITodoCaboService, TodoCaboService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
