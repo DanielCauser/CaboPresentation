@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using AutoMapper;
 using CaboAPI.DTOs;
 using CaboAPI.Entities;
-using CaboAPI.Options;
 using CaboAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.JsonPatch;
 
 
@@ -25,14 +21,17 @@ namespace CaboAPI.Controllers
         private readonly ILogger<CaboController> _logger;
         private readonly IMapper _mapper;
         private readonly ITodoCaboService _caboService;
+        private readonly ITodoItemService _todoItemService;
 
         public CaboController(ILogger<CaboController> logger,
             IMapper mapper,
-            ITodoCaboService caboService)
+            ITodoCaboService caboService,
+            ITodoItemService todoItemService)
         {
             _logger = logger;
             _mapper = mapper;
             _caboService = caboService;
+            _todoItemService = todoItemService;
         }
 
         [HttpGet]
@@ -173,6 +172,25 @@ namespace CaboAPI.Controllers
             _caboService.Delete(existing);
 
             return NoContent();
+        }
+        
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<TodoItemDto>),StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Route("{id}/items")]
+        public IActionResult GetItems([FromRoute] Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest(ModelState);
+
+            var existing = _todoItemService.GetMany(id);
+
+            if (existing is null)
+                return NotFound();
+
+            return Ok(_mapper.Map<IEnumerable<TodoItemDto>>(existing));
         }
     }
 }
