@@ -32,6 +32,7 @@ namespace CaboAPI
         {
             services.AddControllers();
             services.AddResponseCaching();
+            services.AddMemoryCache();
 
             services.AddOptions();
 

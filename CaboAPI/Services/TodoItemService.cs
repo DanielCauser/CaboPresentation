@@ -2,14 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CaboAPI.DTOs;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CaboAPI.Services
 {
     public class TodoItemService : ITodoItemService
     {
+        private readonly IMemoryCache _memoryCache;
+
+        public TodoItemService(IMemoryCache memoryCache)
+        {
+            _memoryCache = memoryCache;
+        }
         public IEnumerable<TodoItemDto> GetMany(Guid id)
         {
-            return TheList.Where(x => x.TodoCaboId == id);
+            return _memoryCache.GetOrCreate($"TodoCabo_{id}", entry =>
+            {
+                entry.SetSlidingExpiration(TimeSpan.FromSeconds(10));
+                entry.SetAbsoluteExpiration(TimeSpan.FromSeconds(40));
+                return TheList.Where(x => x.TodoCaboId == id);
+            });   
         }
         
         private readonly IList<TodoItemDto> TheList = new List<TodoItemDto>

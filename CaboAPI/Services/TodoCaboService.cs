@@ -5,21 +5,31 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using CaboAPI.Entities;
 using CaboAPI.Options;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
 namespace CaboAPI.Services
 {
     public class TodoCaboService : ITodoCaboService
     {
+        private readonly IMemoryCache _memoryCache;
         private readonly IOptions<ExternalServiceConfiguration> _externalServiceConfiguration;
 
-        public TodoCaboService(IOptions<ExternalServiceConfiguration> externalServiceConfiguration)
+        public TodoCaboService(IMemoryCache memoryCache,
+            IOptions<ExternalServiceConfiguration> externalServiceConfiguration)
         {
+            _memoryCache = memoryCache;
             _externalServiceConfiguration = externalServiceConfiguration;
         }
+
         public IEnumerable<TodoCabo> GetList()
         {
-            return TheList;
+            return _memoryCache.GetOrCreate("TodoCabo_List", entry =>
+            {
+                entry.SetSlidingExpiration(TimeSpan.FromSeconds(10));
+                entry.SetAbsoluteExpiration(TimeSpan.FromSeconds(40));
+                return TheList;
+            });
         }
 
         public TodoCabo GetSingle(Guid id)
