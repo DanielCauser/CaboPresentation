@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using CaboAPI.DTOs;
 using CaboAPI.Entities;
+using CaboAPI.Filters;
 using CaboAPI.Services;
 using CaboAPI.Validations;
 using FluentValidation;
@@ -42,6 +43,7 @@ namespace CaboAPI.Controllers
 
         [HttpGet]
         [ApiVersion("1.0", Deprecated = true)]
+        [AddHeader("Author", "Causer")]
         [ProducesResponseType(typeof(IEnumerable<TodoCaboDto>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {

@@ -28,21 +28,26 @@
 
 1. Rest Config
     - Different Verbs
+        - https://exceptionnotfound.net/asp-net-core-demystified-action-results/
     - Http Codes
     - Proper Routing (Explanatory API URL endpoints)
+        - https://docs.microsoft.com/en-us/aspnet/core/web-api/jsonpatch?view=aspnetcore-3.1
     - Data Transfer Objects (AutoMapper)
+    - https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1
 
 1. Validation
     - Default AspNet.Core
     - Fluent Validator
         - https://fluentvalidation.net/aspnet
 
+1. Filters
+    - https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.0
+
 1. Cache
     - Response Cache
+        - https://docs.microsoft.com/en-us/aspnet/core/performance/caching/response?view=aspnetcore-3.1
     - Memory Cache
-
-1. Actions
-    - https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.0
+        - https://docs.microsoft.com/en-us/aspnet/core/performance/caching/memory?view=aspnetcore-3.1
 
 1. ~~Paging Sorting Filtering~~
     - ~~Restful~~
@@ -51,8 +56,4 @@
 
 1. ~~Authentication~~
 
-## Usefull links
-- https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1
-- https://docs.microsoft.com/en-us/aspnet/core/web-api/jsonpatch?view=aspnetcore-3.1
-- https://exceptionnotfound.net/asp-net-core-demystified-action-results/
 
