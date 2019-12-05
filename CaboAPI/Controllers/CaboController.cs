@@ -44,6 +44,7 @@ namespace CaboAPI.Controllers
         [HttpGet]
         [ApiVersion("1.0", Deprecated = true)]
         [AddHeader("Author", "Causer")]
+        [ResponseCache(Duration = 30)]
         [ProducesResponseType(typeof(IEnumerable<TodoCaboDto>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
@@ -52,6 +53,7 @@ namespace CaboAPI.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 30)]
         [ProducesResponseType(typeof(IEnumerable<TodoCabo2Dto>), StatusCodes.Status200OK)]
         public IActionResult Get2()
         {
@@ -61,6 +63,7 @@ namespace CaboAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(TodoCabo2Dto), StatusCodes.Status200OK)]
+        [ResponseCache(Duration = 30, VaryByQueryKeys = new []{"*"})]
         [Route("{id}")]
         public IActionResult GetSingleTodoCabo([FromRoute] Guid id, ApiVersion apiVersion)
         {

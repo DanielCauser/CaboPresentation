@@ -31,6 +31,7 @@ namespace CaboAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddResponseCaching();
 
             services.AddOptions();
 
@@ -76,6 +77,8 @@ namespace CaboAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 
